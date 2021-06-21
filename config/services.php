@@ -31,9 +31,9 @@ return [
     ],
 
     'firebase' => [
-        'api_key' => 'api_key', // Only used from JS integration
-        'auth_domain' => 'auth_domain', // Only used from JS integration
-        'database_url' => 'https://database_url.com/',
-        'storage_bucket' => '', // Only used from JS integration
+        'api_key' => 'AIzaSyCX6ghb-0LOvG4UsA05GkZVBrKCi3QBWc0', // Only used from JS integration
+        'auth_domain' => 'uberapp-f38bb.firebaseapp.com', // Only used from JS integration
+        'database_url' => 'https://uberapp-f38bb-default-rtdb.firebaseio.com/',
+        'storage_bucket' => 'uberapp-f38bb.appspot.com', // Only used from JS integration
     ],
 ];

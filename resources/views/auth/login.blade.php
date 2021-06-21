@@ -77,13 +77,15 @@
       <script>
       // Initialize Firebase
       var firebaseConfig = {
-        apiKey: "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-        authDomain: "XXXXXXXXX.firebaseapp.com",
-        projectId: "XXXXXXXX-XXXX",
-        storageBucket: "XXXXXXXXX.appspot.com",
-        messagingSenderId: "XXXXXXXXXXXX",
-        appId: "XXXXXXXXXXXXXXXXXXXXX",
-        measurementId: "G-XXXXXXXX"
+        
+        apiKey: "AIzaSyCX6ghb-0LOvG4UsA05GkZVBrKCi3QBWc0",
+        authDomain: "uberapp-f38bb.firebaseapp.com",
+        databaseURL: "https://uberapp-f38bb-default-rtdb.firebaseio.com",
+        projectId: "uberapp-f38bb",
+        storageBucket: "uberapp-f38bb.appspot.com",
+        messagingSenderId: "95767135297",
+        appId: "1:95767135297:web:e86b519c96c46061c1b2c0",
+        measurementId: "G-S5L8PJW6Y8"
       };
       firebase.initializeApp(config);
       var facebookProvider = new firebase.auth.FacebookAuthProvider();

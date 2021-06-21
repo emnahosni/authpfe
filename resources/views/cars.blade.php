@@ -1,3 +1,10 @@
+@extends('layouts.master')
+
+@section('title')
+Dashboard | funda of web IT
+@endsection
+
+@section('content')
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,7 +15,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
 
-    <title>WASSALNY</title>
+    <title>Get your driver</title>
 
 </head>
 <body>
@@ -17,7 +24,7 @@
 
     <h4 class="text-center">WASSALNY</h4><br>
 
-    <h5> Add Customer</h5>
+    <h5>  Drivers</h5>
     <div class="card card-default">
         <div class="card-body">
             <form id="addCustomer" class="form-inline" method="POST" action="">
@@ -41,7 +48,14 @@
                     <input id="address" type="text" class="form-control" name="address" placeholder="address"
                            required autofocus>
                 </div>
-                
+                <div class="form-group mx-sm-3 mb-2">
+                    <label for="status" class="sr-only">Status</label>
+                    <select name="status" id="status">
+                            <option value="not active">not active</option>
+                            <option value="active">active</option>                           
+                    </select>
+                </div>
+            
                 <button id="submitCustomer" type="button" class="btn btn-primary mb-2">Submit</button>
             </form>
         </div>
@@ -49,13 +63,14 @@
 
     <br>
 
-    <h5> Customers</h5>
+    <h5> Drivers</h5>
     <table class="table table-bordered">
         <tr>
             <th>Name</th>
             <th>Email</th>
             <th>phone number</th>
             <th>Address</th>
+            <th>Status</th>
             <th width="180" class="text-center">Action</th>
         </tr>
         <tbody id="tbody">
@@ -133,8 +148,30 @@
     firebase.initializeApp(config);
     var database = firebase.database();
     var lastIndex = 0;
+    // Add Data
+    $('#submitCustomer').on('click', function () {
+        var values = $("#addCustomer").serializeArray();
+        var name = values[0].value;
+        var email = values[1].value;
+        var phone = values[2].value;
+        var address = values[3].value;
+        var status = values[4].value;
+        var userID = lastIndex + 1;
+        console.log(values);
+        firebase.database().ref('Users/Riders/' + userID).set({
+            name: name,
+            email: email,
+            phone: phone,
+            address: address,
+            status: status,
+
+        });
+        // Reassign lastID value
+        lastIndex = userID;
+        $("#addCustomer input").val("");
+    });
     // Get Data
-    firebase.database().ref('Users/Customers/').on('value', function (snapshot) {
+    firebase.database().ref('Users/Riders/').on('value', function (snapshot) {
         var value = snapshot.val();
         var htmls = [];
         $.each(value, function (index, value) {
@@ -144,6 +181,7 @@
         		<td>' + value.email + '</td>\
                 <td>' + value.phone + '</td>\
                 <td>' + value.address + '</td>\
+                <td>' + value.status + '</td>\
         		<td><button data-toggle="modal" data-target="#update-modal" class="btn btn-info updateData" data-id="' + index + '">Update</button>\
         		<button data-toggle="modal" data-target="#remove-modal" class="btn btn-danger removeData" data-id="' + index + '">Delete</button></td>\
         	</tr>');
@@ -153,30 +191,11 @@
         $('#tbody').html(htmls);
         $("#submitUser").removeClass('desabled');
     });
-    // Add Data
-    $('#submitCustomer').on('click', function () {
-        var values = $("#addCustomer").serializeArray();
-        var name = values[0].value;
-        var email = values[1].value;
-        var phone = values[2].value;
-        var address = values[3].value;
-        var userID = lastIndex + 1;
-        console.log(values);
-        firebase.database().ref('Users/Customers/' + userID).set({
-            name: name,
-            email: email,
-            phone: phone,
-            address: address,
-        });
-        // Reassign lastID value
-        lastIndex = userID;
-        $("#addCustomer input").val("");
-    });
-    // Update Data
-    var updateID = 0;
+   // Update Data
+   var updateID = 0;
     $('body').on('click', '.updateData', function () {
         updateID = $(this).attr('data-id');
-        firebase.database().ref('Users/Customers/' + updateID).on('value', function (snapshot) {
+        firebase.database().ref('Users/Riders/' + updateID).on('value', function (snapshot) {
             var values = snapshot.val();
             var updateData = '<div class="form-group">\
 		        <label for="first_name" class="col-md-12 col-form-label">Name</label>\
@@ -199,6 +218,11 @@
 		        <div class="col-md-12">\
 		            <input id="address" type="text" class="form-control" name="address" value="' + values.address + '" required autofocus>\
 		        </div>\
+                <div class="form-group">\
+		        <label for="status" class="col-md-12 col-form-label">status</label>\
+		        <div class="col-md-12">\
+		            <input id="status" type="text" class="form-control" name="status" value="' + values.status + '" required autofocus>\
+		        </div>\
 		    </div>';
             $('#updateBody').html(updateData);
         });
@@ -210,9 +234,10 @@
             email: values[1].value,
             phone: values[2].value,
             address: values[3].value,
+            status: values[4].value,
         };
         var updates = {};
-        updates['Users/Customers/' + updateID] = postData;
+        updates['Users/Riders/' + updateID] = postData;
         firebase.database().ref().update(updates);
         $("#update-modal").modal('hide');
     });
@@ -224,7 +249,7 @@
     $('.deleteRecord').on('click', function () {
         var values = $(".users-remove-record-model").serializeArray();
         var id = values[0].value;
-        firebase.database().ref('Users/Customers/' + id).remove();
+        firebase.database().ref('Users/Riders/' + id).remove();
         $('body').find('.users-remove-record-model').find("input").remove();
         $("#remove-modal").modal('hide');
     });
@@ -237,3 +262,7 @@
 
 </body>
 </html>
+@endsection
+
+@section('scripts')
+@endsection

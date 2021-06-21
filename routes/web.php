@@ -26,3 +26,6 @@ Route::get('/email/verify', [App\Http\Controllers\Auth\PasswordResetController::
 Route::post('login/{provider}/callback', 'Auth\LoginController@handleCallback');
 
 Route::resource('/password/reset', App\Http\Controllers\Auth\PasswordResetController::class);
+Route::view('customers','customers');
+Route::view('cars','cars')->middleware('admin','auth');
+Route::view('master','layouts/master');
